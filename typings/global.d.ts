@@ -1,9 +1,12 @@
 import { Store as ReduxStore } from 'redux';
+import { UserState } from '../src/store/ducks/users/types';
 
 declare global {
-	interface Store {}
+	interface ApplicationStore {
+		usersState: UserState;
+	}
 
 	interface Window {
-		store?: ReduxStore<Store>;
+		store?: ReduxStore<ApplicationStore>;
 	}
 }
