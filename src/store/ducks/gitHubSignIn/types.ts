@@ -1,0 +1,11 @@
+export enum GitHubSignInTypes {
+	GITHUB_REQUEST_TOKEN = '@gitHubSignIn/GITHUB_REQUEST_TOKEN',
+	GITHUB_LOGIN_FOR_TOKEN_SUCCESS = '@gitHubSignIn/GITHUB_LOGIN_FOR_TOKEN_SUCCESS',
+	GITHUB_ACCESS_TOKEN_SUCCESS = '@gitHubSignIn/GITHUB_ACCESS_TOKEN_SUCCESS',
+	GITHUB_ACCESS_TOKEN_FAILURE = '@gitHubSignIn/GITHUB_ACCESS_TOKEN_FAILURE',
+}
+
+export interface GitHubSignInState {
+	accessToken: string;
+	code: string;
+}

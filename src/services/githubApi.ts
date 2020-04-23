@@ -1,33 +1,28 @@
 import axios from 'axios';
 
+const clientId = 'f5ec9ab370998eed5ae8'; //todo move out from this file
 const githubApiUrl = 'https://api.github.com/';
-export const githubAuthUrl = 'https://github.com/login/oauth/access_token'; // todo remove export (wip - cannot generate OAuth)
 
-const clientId = 'f5ec9ab370998eed5ae8';
-const clientSecret = 'd25b18f047ee50d2b171e43463e129b65dd69a79';
+const githubLoginUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
+const githubOAuthUrl = 'http://localhost:5000/oauth';
 
 const githubApi = axios.create({
 	baseURL: githubApiUrl,
 	headers: { Accept: 'application/vnd.github.v3+json' },
 });
 
-export const createAuthAPi = (githubCode: string) =>
-	axios.create({
-		baseURL: githubAuthUrl,
-		method: 'POST',
-		headers: {
-			Accept: 'application/vnd.github.v3+json',
-			'Access-Control-Allow-Origin': '*',
-			'Access-Control-Allow-Headers': 'Origin, X-Requested-With',
-			'Access-Control-Allow-Methods': 'POST',
-			'Access-Control-Allow-Credentials': true,
-		},
+const gitHubOAuthApi = (gitHubCode: string) =>
+	axios({
+		url: githubOAuthUrl,
+		method: 'GET',
 		params: {
-			client_id: clientId,
-			clientSecret: clientSecret,
-			code: githubCode,
-			redirect_uri: '/',
+			code: gitHubCode,
 		},
 	});
 
-export default githubApi;
+export default {
+	gitHubOAuthApi,
+	githubLoginUrl,
+	githubOAuthUrl,
+	githubApi,
+};

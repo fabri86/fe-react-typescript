@@ -1,13 +1,12 @@
-import { call, put } from 'redux-saga/effects';
-import githubApi from './../../../services/githubApi';
+import { call, put, take } from 'redux-saga/effects';
+import github from './../../../services/githubApi';
 import { fetchUsersSucceded, fetchUsersFailed } from './actionCreators';
+import { GitHubSignInTypes } from '../gitHubSignIn/types';
 
 export function* fetchGithubUsersSaga() {
 	try {
-		// console.log('@@@@@SAGA STARTED');
-		const response = yield call(githubApi.get, 'users/');
-		// console.log('@@@@@@@@@SAGA response', response);
-
+		yield take(GitHubSignInTypes.GITHUB_ACCESS_TOKEN_SUCCESS);
+		const response = yield call(github.githubApi, 'users/');
 		yield put(fetchUsersSucceded(response));
 	} catch (err) {
 		console.log(err);
