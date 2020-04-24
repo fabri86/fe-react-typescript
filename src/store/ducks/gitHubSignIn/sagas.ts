@@ -3,13 +3,14 @@ import githubApi from './../../../services/githubApi';
 import { accessTokenSuccess, accessTokenFailure } from './actionCreators';
 import { getLoginCode } from './selectors';
 import { GitHubSignInTypes } from './types';
+import { extractAccessToken } from './../../../utils/utils';
 
 function* requestGitHubTokenSaga() {
 	try {
 		const code = yield select(getLoginCode);
 		const response = yield call(githubApi.gitHubOAuthApi, code);
-		console.log('@@ACCESS TOKEN IS: ', response.data);
-		yield put(accessTokenSuccess(response.data));
+		const accessToken = yield extractAccessToken(response.data);
+		yield put(accessTokenSuccess(accessToken));
 	} catch (err) {
 		console.log(err);
 		yield put(accessTokenFailure());
