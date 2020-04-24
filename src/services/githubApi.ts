@@ -11,14 +11,15 @@ const githubApi = axios.create({
 	headers: { Accept: 'application/vnd.github.v3+json' },
 });
 
-const gitHubOAuthApi = (gitHubCode: string) =>
-	axios({
+const gitHubOAuthApi = (gitHubCode: string) => {
+	return axios({
 		url: githubOAuthUrl,
 		method: 'GET',
 		params: {
 			code: gitHubCode,
 		},
 	});
+};
 
 export default {
 	gitHubOAuthApi,

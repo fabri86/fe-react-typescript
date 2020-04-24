@@ -1,7 +1,9 @@
-import { all, takeEvery } from 'redux-saga/effects';
-import { UserActionTypes } from './ducks/users/types';
-import { fetchGithubUsersSaga } from './ducks/users/sagas';
+import { all } from 'redux-saga/effects';
+import { gitHubSagas } from './ducks/gitHubSignIn/sagas';
 
 export default function* rootSaga() {
-	return yield all([ takeEvery(UserActionTypes.FETCH_USERS_REQUEST, fetchGithubUsersSaga) ]);
+	return yield all([
+		...gitHubSagas,
+		// ...userSagas
+	]);
 }

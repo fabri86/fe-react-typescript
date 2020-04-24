@@ -1,16 +1,15 @@
-import { call, put, select, takeLatest, take } from 'redux-saga/effects';
-import github from './../../../services/githubApi';
-import { GitHubSignInTypes } from './types';
-
+import { call, put, select, takeLatest } from 'redux-saga/effects';
+import githubApi from './../../../services/githubApi';
 import { accessTokenSuccess, accessTokenFailure } from './actionCreators';
 import { getLoginCode } from './selectors';
+import { GitHubSignInTypes } from './types';
 
 function* requestGitHubTokenSaga() {
 	try {
-		yield take(GitHubSignInTypes.GITHUB_REQUEST_TOKEN);
 		const code = yield select(getLoginCode);
-		const response = yield call(() => github.gitHubOAuthApi(code));
-		yield put(accessTokenSuccess(response));
+		const response = yield call(githubApi.gitHubOAuthApi, code);
+		console.log('@@ACCESS TOKEN IS: ', response.data);
+		yield put(accessTokenSuccess(response.data));
 	} catch (err) {
 		console.log(err);
 		yield put(accessTokenFailure());
@@ -18,5 +17,10 @@ function* requestGitHubTokenSaga() {
 }
 
 export function* loginForGitHubTokenSaga() {
-	yield takeLatest(GitHubSignInTypes.GITHUB_LOGIN_FOR_TOKEN_SUCCESS, requestGitHubTokenSaga);
+	console.log('REQUESTED TO START');
 }
+
+export const gitHubSagas = [
+	takeLatest(GitHubSignInTypes.GITHUB_REQUEST_TOKEN, requestGitHubTokenSaga),
+	takeLatest(GitHubSignInTypes.GITHUB_LOGIN_FOR_TOKEN_SUCCESS, requestGitHubTokenSaga),
+];

@@ -1,3 +1,1 @@
-import { GitHubSignInState } from './types';
-
-export const getLoginCode = (state: GitHubSignInState) => state.code;
+export const getLoginCode = (state: ApplicationStore) => state.gitHubSignInState.code;

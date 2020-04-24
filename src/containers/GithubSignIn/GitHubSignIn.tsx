@@ -10,34 +10,20 @@ interface StateProps {
 }
 
 interface DispatchProps {
-	requestGitHubToken(code: string): void;
+	requestGitHubToken(): void;
+	loginForTokenSuccess(codeGH: string): void;
 }
 
 type GithHubSignInProps = RouteComponentProps & DispatchProps & StateProps;
 
 class GithHubSignIn extends React.Component<GithHubSignInProps, {}> {
 	async componentDidMount() {
-		const { location, requestGitHubToken } = this.props;
+		const { location, loginForTokenSuccess, requestGitHubToken } = this.props;
 		const codeGH = new URLSearchParams(location.search).get('code');
+		requestGitHubToken();
 
 		if (codeGH) {
-			requestGitHubToken(codeGH);
-
-			// await axios({
-			// 	baseURL: github.githubOAuthUrl,
-			// 	method: 'GET',
-			// 	params: {
-			// 		code: codeGH,
-			// 	},
-			// })
-			// 	.then((response) => {
-			// 		console.log(response.data);
-			// 		accessTokenSuccess(response.data);
-			// 	})
-			// 	.catch((err) => {
-			// 		console.log('Could not receive a token', err);
-			// 		accessTokenFailure();
-			// 	});
+			loginForTokenSuccess(codeGH);
 		} else {
 			console.error('Did not receive a code from Github');
 		}
@@ -56,6 +42,6 @@ class GithHubSignIn extends React.Component<GithHubSignInProps, {}> {
 
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(GithubSignInActions, dispatch);
 
-const connector = connect(mapDispatchToProps);
+const connector = connect(null, mapDispatchToProps);
 
 export default connector(GithHubSignIn);
