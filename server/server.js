@@ -41,11 +41,23 @@ app.get('/oauth', cors(corsOptions), function(req, res) {
 
 app.get(`/${USERS}`, cors(corsOptions), function(req, res) {
 	const TOKEN = req.query.accessToken;
+	const SINCE = req.query.since;
 
-	console.log('@@@users/ RECEIVED TOKEN: ', TOKEN);
+	let sinceParam = '';
+	if (SINCE) {
+		console.log('##############################USERS API INVOKED');
+
+		console.log('@@@@@@@@@@@@@@@@@@@@@@SINCE passed is: ', SINCE);
+
+		const sinceParam = SINCE ? `?since=${SINCE}` : '';
+	} else {
+		// todo sinceParams
+	}
+
+	// console.log('@@@users/ RECEIVED TOKEN: ', TOKEN);
 
 	axios({
-		url: GITHUB_USERS_ENDPOINT,
+		url: `${GITHUB_USERS_ENDPOINT}`,
 		method: 'GET',
 		headers: {
 			Authorization: `token ${TOKEN}`,
@@ -54,8 +66,13 @@ app.get(`/${USERS}`, cors(corsOptions), function(req, res) {
 		},
 	})
 		.then(function(response) {
-			console.log('Successfully fetched users ' + response.data);
-			res.send(response.data);
+			console.log('Successfully fetched users ' + response);
+			console.log('@@@link', response.headers['link']);
+
+			res.send({
+				users: response.data,
+				nextLink: response.headers['link'],
+			});
 		})
 		.catch(function(error) {
 			console.warn('Error fetching users ' + error.message);

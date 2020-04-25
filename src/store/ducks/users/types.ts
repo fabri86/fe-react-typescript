@@ -9,10 +9,18 @@ export interface User {
 	githubName: string;
 	avatar: string;
 	link: string;
+	login: string;
+	// todo add requested fields
 }
 
 export interface UserState {
 	readonly users: User[];
 	readonly fetching: boolean;
 	readonly error: boolean;
+	nextUsersSince: string;
+}
+
+export interface UsersResponse {
+	users: User[];
+	nextUsersSince: string;
 }

@@ -13,7 +13,6 @@ class Root extends React.Component<any, {}> {
 	componentDidMount() {
 		this.callBackendAPI()
 			.then((res) => {
-				console.log(res);
 				this.setState({ data: res.express });
 			})
 			.catch((err) => console.log(err));

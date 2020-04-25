@@ -5,6 +5,7 @@ const initialState: UserState = {
 	users: [],
 	error: false,
 	fetching: false,
+	nextUsersSince: '',
 };
 
 const usersRedeucer: Reducer<UserState> = (state = initialState, action) => {
@@ -18,7 +19,8 @@ const usersRedeucer: Reducer<UserState> = (state = initialState, action) => {
 			return {
 				...state,
 				fetching: false,
-				users: action.payload.data,
+				users: [ ...state.users, ...action.payload.data.users ],
+				nextUsersSince: action.payload.data.nextUsersSince,
 				error: false,
 			};
 		case UserActionTypes.FETCH_USERS_FAILED:

@@ -1,30 +1,24 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators, Dispatch } from 'redux';
-import { User, UserState } from '../../store/ducks/users/types';
+import { User } from '../../store/ducks/users/types';
 import * as UserActions from './../../store/ducks/users/actionCreators';
+import InfiniteScroll from 'react-infinite-scroll-component';
+import './UsersList.scss';
 
 interface StateProps {
 	users: User[];
 }
 
 interface DispatchProps {
-	fetchUsers(): void;
+	fetchUsers: () => void;
 }
 
 type UsersProps = StateProps & DispatchProps;
 
 class UsersList extends React.Component<UsersProps> {
-	async componentDidMount() {
-		// const { fetchUsers } = this.props;
-		const response = await fetch('https://api.github.com/users?since100');
-		const data = await response.json();
-		console.log(data);
-		// fetchUsers();
-	}
-
 	render() {
-		const { users } = this.props;
+		const { users, fetchUsers } = this.props;
 
 		if (!users) {
 			return <div>Show spinner and then users...</div>;
@@ -32,19 +26,25 @@ class UsersList extends React.Component<UsersProps> {
 
 		return (
 			<div>
-				<ul>
-					{users.map((u) => {
-						u.id;
-					})}
-				</ul>
+				<InfiniteScroll
+					dataLength={this.props.users.length}
+					next={fetchUsers}
+					hasMore={true}
+					loader={<h4>Loading more users</h4>}
+					endMessage={<h4>No more users</h4>}
+				>
+					<div>{users.map((x) => <p key={Math.random()}>{x.login}</p>)}</div>
+				</InfiniteScroll>
 			</div>
 		);
 	}
 }
 
-const mapStateToProps = (state: UserState): StateProps => {
+const mapStateToProps = (state: ApplicationStore): StateProps => {
+	const usersState = state.usersState;
+
 	return {
-		users: state.users,
+		users: usersState.users,
 	};
 };
 

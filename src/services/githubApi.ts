@@ -17,9 +17,12 @@ const gitHubOAuthApi = (gitHubCode: string) => {
 	});
 };
 
-const gitHubAllUsersGet = (accessToken: string) => {
+const gitHubAllUsersGet = (accessToken: string, since: string = '') => {
+	console.log('since parameter value is: ', since);
+	const SINCE = since ? `&since=${since}` : ''; // todo build query params
+
 	return axios({
-		url: `${GITHUB_USERS_API_URL}?accessToken=${accessToken}`, // todo consider POST and body
+		url: `${GITHUB_USERS_API_URL}?accessToken=${accessToken}${SINCE}`, // todo consider POST and body
 		method: 'GET',
 	});
 };
