@@ -1,12 +1,13 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps } from 'react-router-dom';
+import { RouteComponentProps, Redirect } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as GithubSignInActions from './../../store/ducks/gitHubSignIn/actionCreators';
+import { getAccessToken } from '../../store/ducks/gitHubSignIn/selectors';
 
 interface StateProps {
-	code: '';
-	accessToken: '';
+	code: string;
+	accessToken: string;
 }
 
 interface DispatchProps {
@@ -32,16 +33,23 @@ class GithHubSignIn extends React.Component<GithHubSignInProps, {}> {
 	render() {
 		const { accessToken } = this.props;
 
-		if (!accessToken) {
-			return null;
+		if (accessToken) {
+			return <Redirect to='/' />;
 		}
-
-		return <div>Token has been obtained!!</div>;
+		return null;
 	}
 }
 
+const mapStateToProps = (state: ApplicationStore) => {
+	const accessToken = getAccessToken(state);
+
+	return {
+		accessToken: accessToken,
+	};
+};
+
 const mapDispatchToProps = (dispatch: Dispatch) => bindActionCreators(GithubSignInActions, dispatch);
 
-const connector = connect(null, mapDispatchToProps);
+const connector = connect(mapStateToProps, mapDispatchToProps);
 
 export default connector(GithHubSignIn);

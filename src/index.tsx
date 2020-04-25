@@ -8,6 +8,8 @@ import UsersList from './containers/UsersList/UsersList';
 import UserDetails from './containers/UserDetails/UserDetails';
 import GithHubSignIn from './containers/GithubSignIn/GitHubSignIn';
 import SignInWithGithub from './components/GitHubLogin/GitHubLogin';
+import { getCookie } from './utils/utils';
+import { accessTokenSuccess } from './store/ducks/gitHubSignIn/actionCreators';
 
 class Root extends React.Component<any, {}> {
 	componentDidMount() {
@@ -16,7 +18,18 @@ class Root extends React.Component<any, {}> {
 				this.setState({ data: res.express });
 			})
 			.catch((err) => console.log(err));
+
+		this.checkForTokenInCookies();
 	}
+
+	checkForTokenInCookies = () => {
+		const accessToken = getCookie('accessToken');
+
+		if (accessToken) {
+			console.log('@@@ You are authenticated...');
+			store.dispatch(accessTokenSuccess(accessToken));
+		}
+	};
 
 	// Fetches our GET route from our server
 	callBackendAPI = async () => {

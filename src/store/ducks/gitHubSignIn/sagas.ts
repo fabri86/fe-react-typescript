@@ -4,6 +4,7 @@ import { accessTokenSuccess, accessTokenFailure } from './actionCreators';
 import { getLoginCode } from './selectors';
 import { GitHubSignInTypes } from './types';
 import { extractAccessToken } from './../../../utils/utils';
+import { setCookie } from '../../../utils/utils';
 
 function* onRequestGitHubTokenSaga() {
 	try {
@@ -12,6 +13,7 @@ function* onRequestGitHubTokenSaga() {
 			const response = yield call(githubApi.gitHubOAuthApi, code);
 			const accessToken = yield extractAccessToken(response.data);
 			yield put(accessTokenSuccess(accessToken));
+			setCookie('accessToken', accessToken);
 		}
 	} catch (err) {
 		console.log('GitHub Saga Error', err);
