@@ -6,6 +6,12 @@ const initialState: UserState = {
 	error: false,
 	fetching: false,
 	nextUsersSince: '',
+	selectedUser: {
+		id: -1,
+		login: '',
+		avatar_url: '',
+		onUserSelected: () => {},
+	},
 };
 
 const usersRedeucer: Reducer<UserState> = (state = initialState, action) => {
@@ -29,6 +35,11 @@ const usersRedeucer: Reducer<UserState> = (state = initialState, action) => {
 				fetching: false,
 				users: [],
 				error: true,
+			};
+		case UserActionTypes.USER_SELECTED:
+			return {
+				...state,
+				selectedUser: action.payload.data,
 			};
 		default:
 			return state;

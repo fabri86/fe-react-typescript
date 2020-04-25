@@ -1,5 +1,6 @@
 {
 	"name": "centra-recruitment-task",
+	"author": "Fabrizio Iacovone",
 	"version": "0.2.0",
 	"license": "MIT",
 	"scripts": {
@@ -63,7 +64,6 @@
 		"tslint-eslint-rules": "5.4.0",
 		"tslint-immutable": "5.0.0",
 		"tslint-microsoft-contrib": "5.2.1",
-		"y": "0.3.2",
 		"tslint-misc-rules": "3.5.1",
 		"tslint-react": "3.6.0",
 		"tslint-sonarts": "1.8.0",

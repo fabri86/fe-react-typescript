@@ -5,7 +5,7 @@ import store from './store/store';
 import { BrowserRouter as Router, Redirect, Route, Switch } from 'react-router-dom';
 import Navigation from './components/Navigation/Navigation';
 import UsersList from './containers/UsersList/UsersList';
-import { UserDetails } from './containers/UserDetails/UserDetails';
+import UserDetails from './containers/UserDetails/UserDetails';
 import GithHubSignIn from './containers/GithubSignIn/GitHubSignIn';
 import SignInWithGithub from './components/GitHubLogin/GitHubLogin';
 
@@ -36,7 +36,7 @@ class Root extends React.Component<any, {}> {
 					<Navigation />
 					<Switch>
 						<Route exact path='/' component={UsersList} />
-						<Route path={'/users/:id'} component={UserDetails} />
+						<Route path={'/users/:login'} component={UserDetails} />
 						<Route path='/signingh' component={SignInWithGithub} />
 						<Route path='/gh/:callback' component={GithHubSignIn} />
 						<Redirect to='/' />

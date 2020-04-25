@@ -1,0 +1,17 @@
+div {
+	display: flex;
+	flex-direction: column;
+	width: 300px;
+
+	p {
+		color: blue !important;
+	}
+
+	&__avatar {
+		width: 200px;
+		height: 50px;
+		background: red;
+	}
+
+	margin-bottom: 50px;
+}

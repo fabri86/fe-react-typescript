@@ -13,6 +13,7 @@ var corsOptions = {
 };
 
 const USERS = 'users';
+const USER_DETAILS = 'userDetails';
 const GITHUB_API_URL = 'https://api.github.com/';
 const GITHUB_USERS_ENDPOINT = `${GITHUB_API_URL}${USERS}`;
 
@@ -43,10 +44,6 @@ app.get('/oauth', cors(corsOptions), function(req, res) {
 app.get(`/${USERS}`, cors(corsOptions), function(req, res) {
 	const TOKEN = req.query.accessToken;
 	const SINCE = req.query.since;
-
-	// console.log('#TOKEN', TOKEN);
-	// console.log('#SINCE', SINCE);
-
 	const searchParams = SINCE ? `?${querystring.stringify({ since: SINCE })}` : '';
 
 	axios({
@@ -59,16 +56,35 @@ app.get(`/${USERS}`, cors(corsOptions), function(req, res) {
 		},
 	})
 		.then(function(response) {
-			console.log('Successfully fetched users ' + response);
-			console.log('@@@link', response.headers['link']);
-
 			res.send({
 				users: response.data,
 				nextLink: response.headers['link'],
 			});
 		})
 		.catch(function(error) {
-			console.warn('Error fetching users ' + error.message);
+			console.warn('Error fetching users ' + error);
+		});
+});
+
+app.get(`/${USER_DETAILS}`, cors(corsOptions), function(req, res) {
+	const TOKEN = req.query.accessToken;
+	const USER_NAME = req.query.login;
+
+	axios({
+		url: `${GITHUB_USERS_ENDPOINT}/${USER_NAME}`,
+		method: 'GET',
+		headers: {
+			Authorization: `token ${TOKEN}`,
+			Accept: 'application/vnd.github.v3+json',
+			'Access-Control-Allow-Origin': '*',
+		},
+	})
+		.then(function(response) {
+			console.log('Successfully fetched user details ' + response);
+			res.send(response.data);
+		})
+		.catch(function(error) {
+			console.warn('Error fetching user details ' + error);
 		});
 });
 
