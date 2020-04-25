@@ -3,6 +3,8 @@ import axios from 'axios';
 const LOCAL_SERVER = 'http://localhost:5000/';
 const clientId = 'f5ec9ab370998eed5ae8'; // todo move out from this file
 const githubLoginUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}`;
+const ACCESS_TOKEN_PARAM = 'accessToken';
+const SINCE_PARAM = 'since';
 
 const GITHUB_OAUTH_API_URL = `${LOCAL_SERVER}oauth`;
 const GITHUB_USERS_API_URL = `${LOCAL_SERVER}users`;
@@ -17,12 +19,16 @@ const gitHubOAuthApi = (gitHubCode: string) => {
 	});
 };
 
-const gitHubAllUsersGet = (accessToken: string, since: string = '') => {
-	console.log('since parameter value is: ', since);
-	const SINCE = since ? `&since=${since}` : ''; // todo build query params
+const gitHubAllUsersGet = (tokenValue: string, sinceValue: string) => {
+	const searchParams = new URLSearchParams();
+	searchParams.append(ACCESS_TOKEN_PARAM, tokenValue);
+
+	if (sinceValue) {
+		searchParams.append(SINCE_PARAM, sinceValue);
+	}
 
 	return axios({
-		url: `${GITHUB_USERS_API_URL}?accessToken=${accessToken}${SINCE}`, // todo consider POST and body
+		url: `${GITHUB_USERS_API_URL}?${searchParams.toString()}`, // todo consider POST and body
 		method: 'GET',
 	});
 };

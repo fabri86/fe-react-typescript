@@ -2,6 +2,7 @@ var axios = require('axios');
 var express = require('express');
 var app = express();
 var config = require('./config');
+const querystring = require('querystring');
 var cors = require('cors');
 
 const port = process.env.PORT || 5000;
@@ -43,21 +44,13 @@ app.get(`/${USERS}`, cors(corsOptions), function(req, res) {
 	const TOKEN = req.query.accessToken;
 	const SINCE = req.query.since;
 
-	let sinceParam = '';
-	if (SINCE) {
-		console.log('##############################USERS API INVOKED');
+	// console.log('#TOKEN', TOKEN);
+	// console.log('#SINCE', SINCE);
 
-		console.log('@@@@@@@@@@@@@@@@@@@@@@SINCE passed is: ', SINCE);
-
-		const sinceParam = SINCE ? `?since=${SINCE}` : '';
-	} else {
-		// todo sinceParams
-	}
-
-	// console.log('@@@users/ RECEIVED TOKEN: ', TOKEN);
+	const searchParams = SINCE ? `?${querystring.stringify({ since: SINCE })}` : '';
 
 	axios({
-		url: `${GITHUB_USERS_ENDPOINT}`,
+		url: `${GITHUB_USERS_ENDPOINT}${searchParams}`,
 		method: 'GET',
 		headers: {
 			Authorization: `token ${TOKEN}`,

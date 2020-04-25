@@ -10,27 +10,12 @@ import { extractSinceFromHeaderLink } from '../../../utils/utils';
 export function* fetchGithubUsersSaga() {
 	try {
 		const accessToken = yield select(getAccessToken);
-		const response = yield call(githubApi.gitHubAllUsersGet, accessToken);
-
+		const since = yield select(getNextUsersSince);
+		const response = yield call(githubApi.gitHubAllUsersGet, accessToken, since);
 		const nextUsersSince = extractSinceFromHeaderLink(response.data.nextLink);
-
 		yield put(fetchUsersSucceded({ users: response.data.users, nextUsersSince: nextUsersSince }));
 	} catch (err) {
 		console.log('Users saga error', err);
-		yield put(fetchUsersFailed());
-	}
-}
-
-// todo sagas can be unified (and check if nextUserSince before invokin)
-
-function* fetchMoreUsersSaga() {
-	try {
-		const accessToken = yield select(getAccessToken);
-		const nextUsersSince = yield select(getNextUsersSince);
-		const response = yield call(githubApi.gitHubAllUsersGet, accessToken, nextUsersSince);
-		yield put(fetchUsersSucceded(response.data));
-	} catch (err) {
-		console.log('Culd not fetch more users');
 		yield put(fetchUsersFailed());
 	}
 }
@@ -40,7 +25,7 @@ function* requestUsersSaga() {
 }
 
 function* requestMoreUsersSaga() {
-	yield takeEvery(UserActionTypes.FETCH_USERS_REQUEST, fetchMoreUsersSaga);
+	yield takeEvery(UserActionTypes.FETCH_USERS_REQUEST, fetchGithubUsersSaga);
 }
 
 export default [ fork(requestUsersSaga), fork(requestMoreUsersSaga) ];
