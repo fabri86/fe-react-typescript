@@ -5,6 +5,8 @@ import * as UserDetailsActions from './../../store/ducks/userDetails/actionCreat
 import { UserDetailsInterface } from '../../store/ducks/userDetails/types';
 import GitHubUserDetails from '../../components/GitHubUserDetails/GitHubUserDetails';
 import { User } from '../../store/ducks/users/types';
+import Loader from 'react-loader-spinner';
+import * as styles from './UserDetails.scss';
 
 interface StateProps {
 	userDetails: UserDetailsInterface;
@@ -23,15 +25,25 @@ class UserDetails extends React.Component<UserDetailsProps> {
 		this.props.fetchUserDetails();
 	}
 
+	renderLoader = () => {
+		return <Loader type='Oval' color='#00BFFF' height={100} width={100} timeout={3000} />;
+	};
+
 	render() {
 		const { userDetails, usersInfo, fetchingDetails } = this.props;
 
 		if (fetchingDetails) {
-			return <div>Loading...</div>; //todo spinner
+			return (
+				<div className={styles.usersDetails}>
+					<h1>User details page</h1>
+					{this.renderLoader()}
+				</div>
+			);
 		}
 
 		return (
-			<div>
+			<div className={styles.usersDetails}>
+				<h1>User details page</h1>
 				<GitHubUserDetails user={usersInfo} userDetails={userDetails} />
 			</div>
 		);

@@ -1,17 +1,30 @@
-div {
+@import './../../sass/variables';
+
+.gitHubUser {
 	display: flex;
-	flex-direction: column;
-	width: 300px;
+	flex-direction: row;
+	width: auto;
 
-	p {
-		color: blue !important;
+	img {
+		object-fit: cover;
+		height: $picture-height;
 	}
 
-	&__avatar {
-		width: 200px;
-		height: 50px;
-		background: red;
+	div {
+		flex: 1;
+		display: flex;
+		justify-content: space-evenly;
+		flex-direction: column;
+		height: $picture-height;
+		width: auto;
+		margin-left: 2rem;
+
+		p {
+			font-size: 1.2rem;
+			color: $title-color;
+			font-weight: 700;
+		}
 	}
 
-	margin-bottom: 50px;
+	margin: 2rem 0;
 }

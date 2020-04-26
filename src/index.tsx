@@ -8,8 +8,9 @@ import UsersList from './containers/UsersList/UsersList';
 import UserDetails from './containers/UserDetails/UserDetails';
 import GithHubSignIn from './containers/GithubSignIn/GitHubSignIn';
 import SignInWithGithub from './components/GitHubLogin/GitHubLogin';
-import { getCookie } from './utils/utils';
 import { accessTokenSuccess } from './store/ducks/gitHubSignIn/actionCreators';
+import { ACCESS_TOKEN } from './utils/utils';
+import DefaultLayout from './layout/DefaultLayout';
 
 class Root extends React.Component<any, {}> {
 	componentDidMount() {
@@ -19,11 +20,11 @@ class Root extends React.Component<any, {}> {
 			})
 			.catch((err) => console.log(err));
 
-		this.checkForTokenInCookies();
+		this.checkForTokenInLocalStorage();
 	}
 
-	checkForTokenInCookies = () => {
-		const accessToken = getCookie('accessToken');
+	checkForTokenInLocalStorage = () => {
+		const accessToken = localStorage.getItem(ACCESS_TOKEN);
 
 		if (accessToken) {
 			console.log('@@@ You are authenticated...');
@@ -43,19 +44,23 @@ class Root extends React.Component<any, {}> {
 	};
 
 	render() {
+		// const token = this.props.accessToken; // PUBLIC ROUTE AND PRIVATE ROUTE
+
 		return (
-			<Provider store={store}>
-				<Router>
-					<Navigation />
-					<Switch>
-						<Route exact path='/' component={UsersList} />
-						<Route path={'/users/:login'} component={UserDetails} />
-						<Route path='/signingh' component={SignInWithGithub} />
-						<Route path='/gh/:callback' component={GithHubSignIn} />
-						<Redirect to='/' />
-					</Switch>
-				</Router>
-			</Provider>
+			<DefaultLayout>
+				<Provider store={store}>
+					<Router>
+						<Navigation />
+						<Switch>
+							<Route exact path='/' component={UsersList} />
+							<Route path={'/users/:login'} component={UserDetails} />
+							<Route path='/signingh' component={SignInWithGithub} />
+							<Route path='/gh/:callback' component={GithHubSignIn} />
+							<Redirect to='/' />
+						</Switch>
+					</Router>
+				</Provider>
+			</DefaultLayout>
 		);
 	}
 }

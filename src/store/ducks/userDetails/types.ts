@@ -17,5 +17,5 @@ export interface UserDetailsState {
 }
 
 export interface UserDetailsResponse {
-	user: UserDetailsInterface;
+	userDetails: UserDetailsInterface;
 }

@@ -1,0 +1,39 @@
+@import './../../sass/variables';
+
+.userDetails {
+	display: flex;
+	flex-direction: column;
+
+	div {
+		h1 {
+			color: $page-title;
+			font-size: 2rem;
+		}
+
+		h2 {
+			font-size: 1.6rem;
+			color: $title-color;
+		}
+
+		h3 {
+			font-size: 1.5rem;
+		}
+
+		img {
+			object-fit: cover;
+			height: 300px;
+		}
+
+		a {
+			font-size: 1.2rem;
+		}
+
+		p {
+			font-size: 1rem;
+			font-weight: 700;
+		}
+	}
+	button {
+		margin-top: 2rem;
+	}
+}
