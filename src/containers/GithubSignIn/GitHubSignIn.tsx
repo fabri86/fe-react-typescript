@@ -1,9 +1,10 @@
 import * as React from 'react';
 import { connect } from 'react-redux';
-import { RouteComponentProps, Redirect } from 'react-router-dom';
+import { RouteComponentProps } from 'react-router-dom';
 import { bindActionCreators, Dispatch } from 'redux';
 import * as GithubSignInActions from './../../store/ducks/gitHubSignIn/actionCreators';
 import { getAccessToken } from '../../store/ducks/gitHubSignIn/selectors';
+import { CODE_QUERY_PARAM } from './../../utils/utils';
 
 interface StateProps {
 	code: string;
@@ -18,9 +19,9 @@ interface DispatchProps {
 type GithHubSignInProps = RouteComponentProps & DispatchProps & StateProps;
 
 class GithHubSignIn extends React.Component<GithHubSignInProps, {}> {
-	async componentDidMount() {
+	componentDidMount() {
 		const { location, loginForTokenSuccess, requestGitHubToken } = this.props;
-		const codeGH = new URLSearchParams(location.search).get('code');
+		const codeGH = new URLSearchParams(location.search).get(CODE_QUERY_PARAM);
 		requestGitHubToken();
 
 		if (codeGH) {
@@ -31,11 +32,6 @@ class GithHubSignIn extends React.Component<GithHubSignInProps, {}> {
 	}
 
 	render() {
-		const { accessToken } = this.props;
-
-		if (accessToken) {
-			return <Redirect to='/' />;
-		}
 		return null;
 	}
 }

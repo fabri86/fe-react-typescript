@@ -7,3 +7,9 @@ export const fetchUserDetailsSucceded = (data: UserDetailsResponse) =>
 	action(UserDetailsActionTypes.FETCH_USER_DETAILS_SUCCEDED, { data });
 
 export const fetchUserDetailsFailed = () => action(UserDetailsActionTypes.FETCH_USER_DETAILS_FAILED);
+
+export const userDetailsUpdateFromRoute = (data: string) =>
+	action(UserDetailsActionTypes.USER_DETAILS_UPDATE_FROM_ROUTE, { data: data });
+
+export const userDetailsSuccessfullyUpdatedFromRoute = () =>
+	action(UserDetailsActionTypes.USER_DETAILS_SUCCESSFULLY_UPDATED_FROM_ROUTE);

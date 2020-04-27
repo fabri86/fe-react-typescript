@@ -21,10 +21,6 @@ function* onRequestGitHubTokenSaga() {
 	}
 }
 
-export function* loginForGitHubTokenSaga() {
-	console.log('REQUESTED TO START');
-}
-
 function* requestGitHubTokenRequestSaga() {
 	yield takeLatest(GitHubSignInTypes.GITHUB_REQUEST_TOKEN, onRequestGitHubTokenSaga);
 }

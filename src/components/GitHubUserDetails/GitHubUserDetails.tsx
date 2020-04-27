@@ -13,7 +13,7 @@ const GitHubUserDetails = ({ user, userDetails }: GitHubUserDetailsProps) => (
 	<div className={styles.userDetails}>
 		<div>
 			<h2>{user.login}</h2>
-			<img src={user.avatar_url} />
+			<img src={userDetails.avatar_url} />
 			<h3>{userDetails.name}</h3>
 			<a href={userDetails.html_url}>{userDetails.html_url}</a>
 			<p>{userDetails.public_repos} public repositories</p>

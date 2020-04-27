@@ -50,7 +50,7 @@ class UsersList extends React.Component<UsersProps> {
 						{users.map((user) => {
 							const { id, login, avatar_url } = user;
 							return (
-								<div key={user.id}>
+								<div key={`gitHubUser-id-${user.id}-${Math.random()}`}>
 									<GitHubUser
 										id={id}
 										login={login}

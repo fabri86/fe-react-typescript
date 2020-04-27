@@ -7,38 +7,79 @@ import GitHubUserDetails from '../../components/GitHubUserDetails/GitHubUserDeta
 import { User } from '../../store/ducks/users/types';
 import Loader from 'react-loader-spinner';
 import * as styles from './UserDetails.scss';
+import { getUserFromPathname } from '../../utils/utils';
+import { Link } from 'react-router-dom';
 
 interface StateProps {
 	userDetails: UserDetailsInterface;
 	usersInfo: User;
 	fetchingDetails: boolean;
+	error: boolean;
 }
 
 interface DispatchProps {
 	fetchUserDetails: () => void;
+	userDetailsUpdateFromRoute: (data: string) => void;
+	userDetailsSuccessfullyUpdatedFromRoute: () => void;
 }
 
-type UserDetailsProps = StateProps & DispatchProps;
+interface FromRouteProps {
+	routeProps: any;
+}
+
+type UserDetailsProps = StateProps & DispatchProps & FromRouteProps;
 
 class UserDetails extends React.Component<UserDetailsProps> {
 	componentDidMount() {
 		this.props.fetchUserDetails();
 	}
 
-	renderLoader = () => {
-		return <Loader type='Oval' color='#00BFFF' height={100} width={100} timeout={3000} />;
-	};
+	handleCallFromRoute() {
+		const {
+			userDetails: { login },
+			userDetailsUpdateFromRoute,
+			userDetailsSuccessfullyUpdatedFromRoute,
+			routeProps,
+		} = this.props;
+
+		const loginFromRoute = getUserFromPathname(routeProps);
+
+		if (loginFromRoute !== login) {
+			userDetailsUpdateFromRoute(loginFromRoute);
+			userDetailsSuccessfullyUpdatedFromRoute();
+		}
+	}
+
+	renderLoader = () => (
+		<div className={styles.usersDetails}>
+			<h1>User details page</h1>
+			<Loader type='Oval' color='#00BFFF' height={100} width={100} timeout={3000} />
+		</div>
+	);
+
+	renderErrorMessage = () => (
+		<div className={styles.usersDetails}>
+			<h1>User details page</h1>
+			<p>User does not exist or his details could not be found</p>
+			<button>
+				<Link to={'/'}>Go back</Link>
+			</button>
+		</div>
+	);
 
 	render() {
-		const { userDetails, usersInfo, fetchingDetails } = this.props;
+		const { userDetails, usersInfo, fetchingDetails, routeProps, error } = this.props;
+
+		if (!userDetails.login && routeProps) {
+			this.handleCallFromRoute();
+		}
 
 		if (fetchingDetails) {
-			return (
-				<div className={styles.usersDetails}>
-					<h1>User details page</h1>
-					{this.renderLoader()}
-				</div>
-			);
+			return this.renderLoader();
+		}
+
+		if (error) {
+			return this.renderErrorMessage();
 		}
 
 		return (
@@ -58,6 +99,7 @@ const mapStateToProps = (state: ApplicationStore): StateProps => {
 		userDetails: userDetailsState.userDetails,
 		fetchingDetails: userDetailsState.fetchingDetails,
 		usersInfo: usersState.selectedUser,
+		error: userDetailsState.error,
 	};
 };
 

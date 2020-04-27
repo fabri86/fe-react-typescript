@@ -41,9 +41,7 @@
 		"modules": true,
 		"plugins": {
 			"autoprefixer": {
-				"browsers": [
-					">5%"
-				],
+				"browsers": [ ">5%" ],
 				"flexbox": "no-2009"
 			}
 		}

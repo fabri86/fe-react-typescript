@@ -7,7 +7,7 @@ import { getNextUsersSince } from './../../ducks/users/selectors';
 import { UserActionTypes } from './types';
 import { extractSinceFromHeaderLink } from '../../../utils/utils';
 
-export function* fetchGithubUsersSaga() {
+export function* onFetchGithubUsersSaga() {
 	try {
 		const accessToken = yield select(getAccessToken);
 		const since = yield select(getNextUsersSince);
@@ -21,11 +21,11 @@ export function* fetchGithubUsersSaga() {
 }
 
 function* requestUsersSaga() {
-	yield takeEvery(GitHubSignInTypes.GITHUB_ACCESS_TOKEN_SUCCESS, fetchGithubUsersSaga);
+	yield takeEvery(GitHubSignInTypes.GITHUB_ACCESS_TOKEN_SUCCESS, onFetchGithubUsersSaga);
 }
 
 function* requestMoreUsersSaga() {
-	yield takeEvery(UserActionTypes.FETCH_USERS_REQUEST, fetchGithubUsersSaga);
+	yield takeEvery(UserActionTypes.FETCH_USERS_REQUEST, onFetchGithubUsersSaga);
 }
 
 export default [ fork(requestUsersSaga), fork(requestMoreUsersSaga) ];

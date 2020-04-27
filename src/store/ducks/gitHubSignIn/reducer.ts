@@ -1,8 +1,9 @@
 import { Reducer } from 'redux';
 import { GitHubSignInTypes, GitHubSignInState } from './types';
+import { getTokenFromLocalStorage } from '../../../utils/utils';
 
 const initialState: GitHubSignInState = {
-	accessToken: '',
+	accessToken: getTokenFromLocalStorage() ?? '',
 	code: '',
 };
 

@@ -63,6 +63,7 @@ app.get(`/${USERS}`, cors(corsOptions), function(req, res) {
 		})
 		.catch(function(error) {
 			console.warn('Error fetching users ' + error);
+			res.sendStatus(404);
 		});
 });
 
@@ -85,6 +86,7 @@ app.get(`/${USER_DETAILS}`, cors(corsOptions), function(req, res) {
 		})
 		.catch(function(error) {
 			console.warn('Error fetching user details ' + error);
+			res.sendStatus(404);
 		});
 });
 
